@@ -116,6 +116,24 @@
       display: grid;
     }
 
+    /* Botão Voltar (aparece só no celular) */
+    .voltar {
+      display: none;
+      margin-bottom: 15px;
+      padding: 10px 20px;
+      background: #4a0072;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .voltar:hover {
+      background: #2e003e;
+    }
+
     /* Cards premium */
     .card {
       background: rgba(255, 255, 255, 0.15);
@@ -302,6 +320,10 @@
       .card .comprar {
         bottom: 15px;
       }
+
+      .voltar {
+        display: inline-block;
+      }
     }
   </style>
 </head>
@@ -337,6 +359,7 @@
 
     <!-- Camisetas -->
     <section id="camisetas" class="produtos">
+      <button class="voltar" onclick="showCategory('inicio')">← Voltar</button>
       <div class="card">
         <img src="img/short_1.jpeg" alt="Camiseta Básica">
         <div class="info">
@@ -346,7 +369,6 @@
         </div>
         <div class="comprar">Comprar</div>
       </div>
-
       <div class="card">
         <img src="img/short_1.jpeg" alt="Camiseta Estampada">
         <div class="info">
@@ -360,6 +382,7 @@
 
     <!-- Camisas -->
     <section id="camisas" class="produtos">
+      <button class="voltar" onclick="showCategory('inicio')">← Voltar</button>
       <div class="card">
         <img src="img/short_1.jpeg" alt="Camisa Social">
         <div class="info">
@@ -369,7 +392,6 @@
         </div>
         <div class="comprar">Comprar</div>
       </div>
-
       <div class="card">
         <img src="img/short_1.jpeg" alt="Camisa Casual">
         <div class="info">
@@ -383,6 +405,7 @@
 
     <!-- Shorts -->
     <section id="shorts" class="produtos">
+      <button class="voltar" onclick="showCategory('inicio')">← Voltar</button>
       <div class="card">
         <img src="img/short_1.jpeg" alt="Shorts Esportivos Masculinos">
         <div class="info">
@@ -392,7 +415,6 @@
         </div>
         <div class="comprar">Comprar</div>
       </div>
-
       <div class="card">
         <img src="img/short_1.jpeg" alt="Shorts Jeans Feminino">
         <div class="info">
@@ -402,7 +424,6 @@
         </div>
         <div class="comprar">Comprar</div>
       </div>
-
       <div class="card">
         <img src="img/short_1.jpeg" alt="Shorts Masculino Casual">
         <div class="info">
@@ -412,7 +433,6 @@
         </div>
         <div class="comprar">Comprar</div>
       </div>
-
       <div class="card">
         <img src="img/short_1.jpeg" alt="Shorts de Praia">
         <div class="info">
@@ -426,6 +446,7 @@
 
     <!-- Promoções -->
     <section id="promocoes" class="produtos">
+      <button class="voltar" onclick="showCategory('inicio')">← Voltar</button>
       <div class="card">
         <img src="img/short_1.jpeg" alt="Promoção">
         <div class="info">
@@ -435,7 +456,6 @@
         </div>
         <div class="comprar">Comprar</div>
       </div>
-
       <div class="card">
         <img src="img/short_1.jpeg" alt="Promoção Especial">
         <div class="info">
@@ -462,34 +482,33 @@
     </a>
   </div>
 
- <script>
-  // Sidebar
-  const toggle = document.querySelector(".menu-toggle");
-  const sidebar = document.querySelector(".sidebar");
-  toggle.addEventListener("click", () => {
-    sidebar.classList.toggle("active");
-  });
-
-  // WhatsApp
-  function toggleWhatsappOptions() {
-    const menu = document.getElementById("whatsappOptions");
-    menu.style.display = (menu.style.display === "block") ? "none" : "block";
-  }
-
-  // Mostrar categorias
-  function showCategory(categoryId) {
-    // troca seção ativa
-    document.querySelectorAll(".produtos").forEach(section => {
-      section.classList.remove("active");
+  <script>
+    // Sidebar
+    const toggle = document.querySelector(".menu-toggle");
+    const sidebar = document.querySelector(".sidebar");
+    toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("active");
     });
-    document.getElementById(categoryId).classList.add("active");
 
-    // fecha a sidebar no celular
-    if (window.innerWidth <= 768) {
-      sidebar.classList.remove("active");
+    // WhatsApp
+    function toggleWhatsappOptions() {
+      const menu = document.getElementById("whatsappOptions");
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
     }
-  }
-</script>
+
+    // Mostrar categorias
+    function showCategory(categoryId) {
+      document.querySelectorAll(".produtos").forEach(section => {
+        section.classList.remove("active");
+      });
+      document.getElementById(categoryId).classList.add("active");
+
+      // Fecha sidebar no celular
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove("active");
+      }
+    }
+  </script>
 
 </body>
 </html>
