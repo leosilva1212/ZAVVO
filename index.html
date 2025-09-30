@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZAVVO</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f0f0f5;
+      color: #333;
+    }
+
+    /* Cabeçalho */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #2e003e, #4a0072);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1000;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.25);
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header .logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    header .logo h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* Menu Hamburguer */
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 220px;
+      height: 100%;
+      background: #2e003e;
+      color: white;
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin: 12px 0;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      background: #3a0050;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .sidebar ul li a:hover {
+      background: linear-gradient(90deg, #bb86fc, #4a0072);
+      color: #fff;
+      transform: translateX(5px) scale(1.02);
+    }
+
+    /* Conteúdo */
+    main {
+      margin-left: 240px;
+      padding: 100px 20px 50px 20px;
+    }
+
+    .produtos {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .produtos.active {
+      display: grid;
+    }
+
+    /* Cards premium */
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.05);
+    }
+
+    .card .info {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card .info h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #2e003e;
+      font-weight: 700;
+    }
+
+    .card .info p {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+
+    .card .preco {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ff2e63;
+      background: #fff0f5;
+      padding: 10px 15px;
+      border-radius: 12px;
+      display: inline-block;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .card .preco:hover {
+      background: #ff2e63;
+      color: #fff;
+    }
+
+    /* Botão Comprar */
+    .card .comprar {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #4a0072;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 15px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover .comprar {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(-10px);
+    }
+
+    /* Títulos */
+    .produtos h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #4a0072;
+      font-weight: 700;
+    }
+
+    .produtos p {
+      text-align: center;
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    /* Botão WhatsApp */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      border-radius: 30px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+      z-index: 1000;
+      cursor: pointer;
+    }
+
+    .whatsapp-float:hover {
+      background: #1ebe5c;
+    }
+
+    .whatsapp-float i {
+      font-size: 22px;
+    }
+
+    /* Menu suspenso dos vendedores */
+    .whatsapp-options {
+      display: none;
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+      overflow: hidden;
+      z-index: 1001;
+    }
+
+    .whatsapp-options a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .whatsapp-options a:hover {
+      background: #f5f5f5;
+    }
+
+    .whatsapp-options i {
+      color: #25d366;
+      font-size: 20px;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      main {
+        margin-left: 0;
+        padding: 100px 15px 50px 15px;
+      }
+
+      .card .comprar {
+        bottom: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">
+      <img src="img/zavvo-logo.png" alt="ZAVVO Logo">
+      <h1>ZAVVO</h1>
+    </div>
+    <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <ul>
+      <li><a onclick="showCategory('inicio')"><i class="fas fa-home"></i> Início</a></li>
+      <li><a onclick="showCategory('camisetas')"><i class="fas fa-tshirt"></i> Camisetas</a></li>
+      <li><a onclick="showCategory('camisas')"><i class="fas fa-user-tie"></i> Camisas</a></li>
+      <li><a onclick="showCategory('shorts')"><i class="fas fa-person-walking"></i> Shorts</a></li>
+      <li><a onclick="showCategory('promocoes')"><i class="fas fa-percentage"></i> Promoções</a></li>
+    </ul>
+  </nav>
+
+  <!-- Conteúdo -->
+  <main>
+    <!-- Início -->
+    <section id="inicio" class="produtos active">
+      <h2>Bem-vindo à ZAVVO!</h2>
+      <p>Escolha uma categoria no menu ao lado.</p>
+    </section>
+
+    <!-- Camisetas -->
+    <section id="camisetas" class="produtos">
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Camiseta Básica">
+        <div class="info">
+          <h3>Camiseta Básica</h3>
+          <p>Conforto e estilo no dia a dia.</p>
+          <div class="preco">R$ 59,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Camiseta Estampada">
+        <div class="info">
+          <h3>Camiseta Estampada</h3>
+          <p>Design moderno e tecido macio.</p>
+          <div class="preco">R$ 79,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+    </section>
+
+    <!-- Camisas -->
+    <section id="camisas" class="produtos">
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Camisa Social">
+        <div class="info">
+          <h3>Camisa Social</h3>
+          <p>Ideal para ocasiões formais.</p>
+          <div class="preco">R$ 139,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Camisa Casual">
+        <div class="info">
+          <h3>Camisa Casual</h3>
+          <p>Elegância e conforto no mesmo produto.</p>
+          <div class="preco">R$ 119,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+    </section>
+
+    <!-- Shorts -->
+    <section id="shorts" class="produtos">
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Shorts Esportivos Masculinos">
+        <div class="info">
+          <h3>Shorts Esportivos</h3>
+          <p>Leve, respirável e ideal para treinos intensos.</p>
+          <div class="preco">R$ 89,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Shorts Jeans Feminino">
+        <div class="info">
+          <h3>Shorts Jeans Feminino</h3>
+          <p>Estilo casual com corte moderno e confortável.</p>
+          <div class="preco">R$ 129,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Shorts Masculino Casual">
+        <div class="info">
+          <h3>Shorts Casual</h3>
+          <p>Perfeito para o dia a dia, combina com qualquer look.</p>
+          <div class="preco">R$ 109,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Shorts de Praia">
+        <div class="info">
+          <h3>Shorts de Praia</h3>
+          <p>Confortável e estiloso para curtir o verão.</p>
+          <div class="preco">R$ 99,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+    </section>
+
+    <!-- Promoções -->
+    <section id="promocoes" class="produtos">
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Promoção">
+        <div class="info">
+          <h3>Produto em Promoção</h3>
+          <p>Aproveite nossas ofertas especiais!</p>
+          <div class="preco">R$ 49,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+
+      <div class="card">
+        <img src="img/short_1.jpeg" alt="Promoção Especial">
+        <div class="info">
+          <h3>Promoção Especial</h3>
+          <p>Descontos exclusivos por tempo limitado.</p>
+          <div class="preco">R$ 79,90</div>
+        </div>
+        <div class="comprar">Comprar</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- WhatsApp -->
+  <div class="whatsapp-float" onclick="toggleWhatsappOptions()">
+    <i class="fab fa-whatsapp"></i> Fale com um de nossos vendedores
+  </div>
+
+  <div class="whatsapp-options" id="whatsappOptions">
+    <a href="https://wa.me/5561998671371?text=Olá! Gostaria de mais informações." target="_blank">
+      <i class="fab fa-whatsapp"></i> Vendendor 1
+    </a>
+    <a href="https://wa.me/5561993699336?text=Olá! Gostaria de mais informações." target="_blank">
+      <i class="fab fa-whatsapp"></i> Vendendor 2 
+    </a>
+  </div>
+
+ <script>
+  // Sidebar
+  const toggle = document.querySelector(".menu-toggle");
+  const sidebar = document.querySelector(".sidebar");
+  toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+  });
+
+  // WhatsApp
+  function toggleWhatsappOptions() {
+    const menu = document.getElementById("whatsappOptions");
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+  }
+
+  // Mostrar categorias
+  function showCategory(categoryId) {
+    // troca seção ativa
+    document.querySelectorAll(".produtos").forEach(section => {
+      section.classList.remove("active");
+    });
+    document.getElementById(categoryId).classList.add("active");
+
+    // fecha a sidebar no celular
+    if (window.innerWidth <= 768) {
+      sidebar.classList.remove("active");
+    }
+  }
+</script>
+
+</body>
+</html>
